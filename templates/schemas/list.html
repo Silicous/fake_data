@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="uk-margin-top uk-flex uk-flex-between uk-flex-middle">
+    <div>
+      <h1 class="uk-h3">Data schemas</h1>
+    </div>
+    <div>
+      <a class="uk-button uk-button-primary" href="{% url 'create' %}">New schema</a>
+    </div>
+  </div>
+  {% if object_list.count > 0 %}
+    <table class="uk-table">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Schema</th>
+        <th>Modified</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      {% for el in object_list %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          {% if el.schemacolumns.count > 0 %}
+          <td><a href="#!" class="uk-link"  uk-tooltip="Create dataset">{{ el.name|default:"Untitled schema" }}</a></td>
+          {% else %}
+          <td><a href="{% url 'datasets' pk=el.pk %}" class="uk-link" uk-tooltip="Export dataset" uk-disabled>{{ el.name|default:"Untitled schema" }}</a></td>
+          {% endif %}
+          <td>{{ el.updated|date:"Y-m-d" }}</td>
+          <td>
+            <a href="{% url 'edit' pk=el.pk %}" class="uk-link uk-margin-small-right">Edit scheme</a>
+            <a href="{% url 'delete' pk=el.pk %}" class="uk-link uk-text-danger">Delete</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <div class="uk-flex uk-flex-middle uk-flex-center uk-height-small uk-flex-column">
+      <div>
+        <h2 class="uk-text-muted">No schemas yet</h2>
+      </div>
+    </div>
+  {% endif %}
+
+
+{% endblock %}

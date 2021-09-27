@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="uk-section uk-section-xsmall">
+    <form method="post" id="schemaform" enctype='multipart/form-data'>
+      <div class="uk-flex uk-flex-between uk-flex-middle uk-padding uk-padding-remove-bottom">
+        <div>
+          <h1 class="uk-h3">Schema '{{ request.user.username }}'</h1>
+        </div>
+        <div>
+          <button class="uk-button uk-button-primary" type="submit" name="action" value="submit">Submit</button>
+        </div>
+      </div>
+      {% csrf_token %}
+      <div class="uk-padding uk-padding-remove-vertical head-form">
+        {{ form }}
+      </div>
+      <h3 class="uk-padding uk-padding-remove-vertical">Schema columns</h3>
+      <div class="uk-flex uk-flex-column">
+        {% for formset in inlines %}
+          <div class="formset">
+            {{ formset.management_form }}
+            {% for columnsform in formset %}
+              <div class="uk-padding columns-form {% if forloop.last %}last uk-border-rounded uk-margin-top{% else %} uk-padding-remove-vertical {% endif %}">
+                {{ columnsform }}
+                {% if forloop.last %}
+                  <div>
+                    <button class="uk-button uk-button-default uk-margin-top" type="submit" name="action" value="add_column">Add column</button>
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+          {% if inlines.length == 1 %}
+            <hr>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </form>
+  </section>
+
+  <style>
+      form {
+          display: flex;
+          flex-direction: column;
+      }
+
+      .columns-form.last {
+          border: 1px solid #E5E5E5;
+          border-radius: 4px;
+      }
+
+      .columns-form {
+          display: grid;
+          grid-template: '1 1 1 1 1 1 1 1 1 1 1 1';
+          grid-gap: 15px;
+          align-items: center;
+      }
+
+      .head-form {
+          display: grid;
+          grid-template: '1 1';
+          grid-gap: 15px;
+
+      }
+  </style>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base_blank.html' %}
+
+{% block title %}Login | {% endblock %}
+
+
+{% load static %}
+
+{% block content %}
+<section class="uk-section uk-section-xsmall">
+    <div class="uk-container">
+        <div class="uk-flex uk-flex-middle uk-flex-column">
+            <h1 class="uk-h3 uk-text-center uk-margin-top">Login</h1>
+            <div class="uk-card uk-card-default uk-card-body uk-border-rounded uk-width-medium uk-width-large@m uk-padding-small">
+                <form method="post" class="uk-form-stacked">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        <div class="uk-form-controls">
+                            {{ field }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="uk-text-center">
+                        <button class="uk-button uk-button-primary" type="submit">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

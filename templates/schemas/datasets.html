@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-top">
+    <div>
+      <h1 class="uk-h3">Data sets of {{ schema }}</h1>
+    </div>
+    <div>
+      <form class="uk-width-large uk-flex uk-flex-middle uk-flex-right" method="post">
+        {% csrf_token %}
+        <label class="uk-uk-form-label uk-margin-small-right" for="rows"> Rows:</label>
+        <div class="uk-form-controls">
+          <input class="uk-input uk-margin-small-right" name="rows" style="max-width: 100px;" type="number" required />
+        </div>
+        <button class="uk-button uk-button-primary" type="submit" value="submit">Generate data</button>
+      </form>
+    </div>
+  </div>
+  {% if schema.schemadatasets.count > 0 %}
+    <div class="uk-overflow-auto">
+      <table class="uk-table uk-table-divider">
+        <thead>
+        <tr>
+          <th>id</th>
+          <th>Created</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        {% for el in schema.schemadatasets.all %}
+          <tr>
+            <td class="uk-table-shrink">{{ el.id }}</td>
+            <td class="uk-table-shrink">{{ el.updated|date:"Y-m-d" }}</td>
+            <td class="uk-width-small">
+              <span class="uk-label uk-label-{{ el.get_status_display|lower }}">{{ el.get_status_display }}</span></td>
+            <td class="uk-width-small">
+              {% if el.download_link %}
+                <a href="{{ el.download_link }}" class="uk-link">Download</a>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% else %}
+    <div class="uk-flex uk-flex-middle uk-flex-center uk-height-small uk-flex-column">
+      <div>
+        <h2 class="uk-text-muted">No exported data sets yet</h2>
+      </div>
+    </div>
+  {% endif %}
+
+  <style>
+      .uk-label-ready {
+          background-color: #19865C;
+      }
+
+      .uk-label-processing {
+          background-color: #555555;
+      }
+
+      .uk-label-error {
+          background-color: #D9534F;
+      }
+  </style>
+
+{% endblock %}

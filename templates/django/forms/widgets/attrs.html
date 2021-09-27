@@ -1,0 +1,16 @@
+{% for name, value in widget.attrs.items %}
+  {% if value is not False %}{{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}
+      {% if name == "class" %}
+        {% if widget.type == "text" or widget.type == "email" or widget.type == "password" or widget.type == "number" %}
+          uk-input
+        {% elif widget.type == "select" %}
+        {% else %}uk-{{ widget.type }} {% endif %}
+      {% endif %}"
+  {% endif %}
+  {% endif %}
+{% endfor %}
+{% if "class" not in widget.attrs.items %}
+  class="{% if widget.type == "text" or widget.type == "email" or widget.type == "password" or widget.type == "number" %}uk-input
+  {% elif widget.type == "select" %}
+{% else %}uk-{{ widget.type }} {% endif %}"
+{% endif %}

@@ -1,0 +1,18 @@
+  {% if messages %}
+    <div class="uk-container uk-container-xsmall">
+      {% for message in messages %}
+        {% if message.tags %}
+        {% comment %} UIkit's 'error' label is named 'danger' and no 'info' by default {% endcomment %}
+        <div class="uk-margin-top uk-animation-slide-top-small {% if 'error' in message.tags %}uk-alert-danger{% elif 'info' in message.tags %}uk-alert-primary{% else %}uk-alert-{{ message.tags|lower }}{% endif %}" uk-alert>
+          <a class="uk-alert-close" uk-close></a>
+          <p>{{ message }}</p>
+        </div>
+        {% else %}
+        <div class="uk-margin-top uk-animation-slide-top-small uk-alert-primary" uk-alert>
+          <a class="uk-alert-close" uk-close></a>
+          <p>{{ message }}</p>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
