@@ -126,5 +126,6 @@ class DataSetsView(LoginRequiredMixin, UserPassesTestMixin, FormMixin, DetailVie
 
     def post(self, request, *args, **kwargs):
         params = (str(self.get_object().pk), request.POST["rows"])
-        generate_csv_task.delay(obj=params[0], rows=params[1])
+        # generate_csv_task.delay(obj=params[0], rows=params[1])
+        generate_csv_task(obj=params[0], rows=params[1])
         return HttpResponseRedirect(reverse("datasets", kwargs={"pk": self.get_object().pk}))
